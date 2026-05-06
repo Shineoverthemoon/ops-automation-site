@@ -969,7 +969,7 @@ Email:     ${form.email || '—'}
    ${form.output || '—'}
 
 ------------------------------------
-Reply to: [PUT_REAL_EMAIL_HERE]`
+Reply to: josephwquinn90@outlook.com`
   }, [form, selectedPackage])
 
   const copy = async () => {
@@ -1038,10 +1038,10 @@ Reply to: [PUT_REAL_EMAIL_HERE]`
           <div className="mt-3 panel p-4">
             <div className="label mb-2">send to</div>
             <div className="font-mono text-[13px] text-ink-100 leading-relaxed">
-              Email: <span className="text-signal">[PUT_REAL_EMAIL_HERE]</span>
+              Email: <span className="text-signal">josephwquinn90@outlook.com</span>
             </div>
             <div className="font-mono text-[13px] text-ink-100 leading-relaxed mt-1">
-              or DM on LinkedIn: <span className="text-signal">[PUT_REAL_LINKEDIN_HERE]</span>
+              or DM on LinkedIn: <span className="text-signal">linkedin.com/in/joseph-quinn-730622218</span>
             </div>
           </div>
 
