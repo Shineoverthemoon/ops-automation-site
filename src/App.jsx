@@ -6,6 +6,17 @@ import { useState, useMemo } from 'react'
    ===================================================================== */
 
 export default function App() {
+  // Lifted state: pricing card → intake form prefill
+  const [selectedPackage, setSelectedPackage] = useState(null)
+
+  const selectPackage = (pkgLabel) => {
+    setSelectedPackage(pkgLabel)
+    // Defer scroll a tick so React state commits first
+    setTimeout(() => {
+      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 60)
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
       <Nav />
@@ -14,9 +25,12 @@ export default function App() {
         <DemoLab />
         <WhatIAutomate />
         <Proof />
-        <Packages />
+        <Packages onSelectPackage={selectPackage} />
         <Boundaries />
-        <Contact />
+        <Contact
+          selectedPackage={selectedPackage}
+          clearPackage={() => setSelectedPackage(null)}
+        />
       </main>
       <Footer />
     </div>
@@ -87,7 +101,7 @@ function Hero() {
           <span className="label">live · fixed-scope ops automation sprint</span>
         </div>
 
-        <h1 className="text-5xl md:text-7xl font-medium tracking-tightest leading-[0.95] text-balance max-w-4xl">
+        <h1 className="text-4xl sm:text-5xl md:text-7xl font-medium tracking-tightest leading-[0.95] text-balance max-w-4xl">
           I automate <br className="hidden md:block" />
           <span className="text-ink-300">repetitive business</span> <br className="hidden md:block" />
           workflows.
@@ -837,7 +851,7 @@ const PACKAGES = [
   },
 ]
 
-function Packages() {
+function Packages({ onSelectPackage }) {
   return (
     <section className="mx-auto max-w-6xl px-6 py-20">
       <SectionHead
@@ -869,9 +883,12 @@ function Packages() {
                 </li>
               ))}
             </ul>
-            <a href="#contact" className={p.featured ? 'btn-primary' : 'btn-secondary'}>
+            <button
+              type="button"
+              onClick={() => onSelectPackage(`${p.price} ${p.name}`)}
+              className={p.featured ? 'btn-primary' : 'btn-secondary'}>
               start this →
-            </a>
+            </button>
           </div>
         ))}
       </div>
@@ -886,9 +903,9 @@ function Packages() {
 const BOUNDARIES = [
   '50% upfront before any build work begins.',
   'Fixed scope only — no open-ended retainers.',
-  'No PHI. No regulated data. No protected health/financial info.',
+  'No PHI, regulated data, credentials, or sensitive customer/financial records in the demos or intake form.',
   'No vague "automate my whole business" projects. One workflow at a time.',
-  'No unpaid builds, no spec work, no "show me what you can do" demos beyond what is on this page.',
+  'No unpaid custom builds or speculative work. The demos on this page show the style of work before we scope anything.',
   'Client validates outputs before any operational use.',
 ]
 
@@ -920,7 +937,7 @@ function Boundaries() {
    CONTACT — generates copyable intake summary
    =========================================================== */
 
-function Contact() {
+function Contact({ selectedPackage, clearPackage }) {
   const [form, setForm] = useState({
     name: '', email: '',
     workflow: '', frequency: '', tools: '', output: '',
@@ -930,10 +947,13 @@ function Contact() {
   const handle = (k) => (e) => setForm({ ...form, [k]: e.target.value })
 
   const summary = useMemo(() => {
+    const pkgLine = selectedPackage
+      ? `Package interest: ${selectedPackage}\n\n`
+      : ''
     return `OPS AUTOMATION LAB — INTAKE SUMMARY
 ====================================
 
-Name:      ${form.name || '—'}
+${pkgLine}Name:      ${form.name || '—'}
 Email:     ${form.email || '—'}
 
 1. What workflow do you repeat?
@@ -949,8 +969,8 @@ Email:     ${form.email || '—'}
    ${form.output || '—'}
 
 ------------------------------------
-Reply to: [YOUR_EMAIL_HERE]`
-  }, [form])
+Reply to: [PUT_REAL_EMAIL_HERE]`
+  }, [form, selectedPackage])
 
   const copy = async () => {
     try {
@@ -977,6 +997,21 @@ Reply to: [YOUR_EMAIL_HERE]`
 
       <div className="grid lg:grid-cols-2 gap-6">
         <div className="space-y-3">
+          {selectedPackage && (
+            <div className="flex items-start justify-between gap-3 px-4 py-3 border border-signal/40 bg-signal/5">
+              <div className="min-w-0">
+                <div className="label text-signal mb-1">selected package</div>
+                <div className="font-mono text-[13px] text-ink-100 truncate">{selectedPackage}</div>
+              </div>
+              <button
+                type="button"
+                onClick={clearPackage}
+                className="font-mono text-xs text-ink-300 hover:text-ink-100 transition-colors px-2 py-1 shrink-0"
+                aria-label="clear selected package">
+                clear ×
+              </button>
+            </div>
+          )}
           <div className="grid grid-cols-2 gap-3">
             <Field label="name"><input className="input" value={form.name} onChange={handle('name')} placeholder="Jane Doe" /></Field>
             <Field label="email"><input type="email" className="input" value={form.email} onChange={handle('email')} placeholder="jane@company.co" /></Field>
@@ -1003,10 +1038,10 @@ Reply to: [YOUR_EMAIL_HERE]`
           <div className="mt-3 panel p-4">
             <div className="label mb-2">send to</div>
             <div className="font-mono text-[13px] text-ink-100 leading-relaxed">
-              Email: <span className="text-signal">[YOUR_EMAIL_HERE]</span>
+              Email: <span className="text-signal">[PUT_REAL_EMAIL_HERE]</span>
             </div>
             <div className="font-mono text-[13px] text-ink-100 leading-relaxed mt-1">
-              or DM on LinkedIn: <span className="text-signal">[YOUR_LINKEDIN_HERE]</span>
+              or DM on LinkedIn: <span className="text-signal">[PUT_REAL_LINKEDIN_HERE]</span>
             </div>
           </div>
 
