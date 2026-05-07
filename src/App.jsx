@@ -22,7 +22,9 @@ export default function App() {
       <Nav />
       <main className="flex-1">
         <Hero />
+        <Examples />
         <DemoLab />
+        <HowItWorks />
         <WhatIAutomate />
         <Proof />
         <Packages onSelectPackage={selectPackage} />
@@ -50,10 +52,10 @@ function Nav() {
           </span>
         </a>
         <nav className="hidden md:flex items-center gap-7 font-mono text-[13px] text-ink-300">
+          <a href="#examples" className="hover:text-ink-100 transition-colors">examples</a>
           <a href="#demos" className="hover:text-ink-100 transition-colors">demos</a>
-          <a href="#what" className="hover:text-ink-100 transition-colors">what</a>
-          <a href="#proof" className="hover:text-ink-100 transition-colors">proof</a>
-          <a href="#packages" className="hover:text-ink-100 transition-colors">packages</a>
+          <a href="#how" className="hover:text-ink-100 transition-colors">how</a>
+          <a href="#packages" className="hover:text-ink-100 transition-colors">pricing</a>
           <a href="#contact" className="btn-secondary px-4 py-2 text-[13px]">contact ↗</a>
         </nav>
       </div>
@@ -108,14 +110,14 @@ function Hero() {
         </h1>
 
         <p className="mt-8 text-lg text-ink-200 max-w-2xl leading-relaxed">
-          Spreadsheets, reports, email, files, forms, and data cleanup —
-          turned into fixed-scope automations. One workflow. Fixed price.
-          No vague AI consulting.
+          You describe one repeating task. I quote a fixed price within 24 hours,
+          build it, and hand it off in 1–3 weeks. Most projects fall between
+          $750 and $3,000.
         </p>
 
         <div className="mt-10 flex flex-wrap items-center gap-3">
-          <a href="#demos" className="btn-primary">
-            view demos →
+          <a href="#examples" className="btn-primary">
+            see examples →
           </a>
           <a href="#contact" className="btn-secondary">
             send me a workflow
@@ -141,6 +143,52 @@ function Hero() {
   )
 }
 
+/* ---------- EXAMPLES — concrete "what you'd hire me to build" ---------- */
+
+const EXAMPLE_BUILDS = [
+  {
+    name: 'Weekly report automation',
+    body: 'You export 2–3 spreadsheets every week. I build a script that cleans them, combines them, and produces the same report format every time.',
+  },
+  {
+    name: 'Intake → follow-up automation',
+    body: 'You receive form submissions or emails. I build a workflow that organizes the request, updates a sheet, and drafts the right follow-up.',
+  },
+  {
+    name: 'File cleanup automation',
+    body: 'You download messy files every week. I build a tool that renames, sorts, validates, and moves them into the right folders.',
+  },
+  {
+    name: 'CSV cleanup / data formatting',
+    body: 'You receive messy CSVs from clients, vendors, or exports. I build a repeatable cleaner that formats them the same way every time.',
+  },
+]
+
+function Examples() {
+  return (
+    <section className="mx-auto max-w-6xl px-6 py-20">
+      <SectionHead
+        id="examples"
+        num="01"
+        kicker="examples · what you can hire me to build"
+        title="Examples of what you can hire me to build."
+        sub="Plain-language versions of real fixed-scope projects. If your workflow looks like one of these, send it to me."
+      />
+      <div className="grid md:grid-cols-2 gap-px bg-ink-700 border border-ink-700">
+        {EXAMPLE_BUILDS.map((ex, i) => (
+          <div key={i} className="bg-ink-900 px-6 py-6">
+            <div className="flex items-baseline gap-3 mb-2">
+              <span className="font-mono text-[11px] text-signal">{String(i+1).padStart(2,'0')}</span>
+              <h3 className="font-mono text-[15px] text-ink-100">{ex.name}</h3>
+            </div>
+            <p className="ml-7 text-[15px] text-ink-300 leading-relaxed">{ex.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 /* ===========================================================
    DEMO LAB — tabbed interface for 5 demos
    =========================================================== */
@@ -160,10 +208,10 @@ function DemoLab() {
     <section className="mx-auto max-w-6xl px-6 pb-20">
       <SectionHead
         id="demos"
-        num="01"
+        num="02"
         kicker="interactive demos"
-        title="Try the kind of work I ship."
-        sub="Five mini demos. Front-end only, fake data. They illustrate the shape of automations I build for clients — not their full implementations."
+        title="See examples of repetitive work I automate."
+        sub="Five live demos showing the shape of the automations I build. Front-end only, fake data — they illustrate the logic, not full client implementations."
       />
 
       {/* Tab strip */}
@@ -714,6 +762,45 @@ function Stat({ label, value, accent, mono, compact }) {
 }
 
 /* ===========================================================
+   HOW IT WORKS — process clarity
+   =========================================================== */
+
+const HOW_STEPS = [
+  { name: 'Send one workflow',         body: 'You describe one repetitive task. Use the intake form below — takes about 2 minutes.' },
+  { name: 'Fit check in 24 hours',     body: 'I confirm whether it fits a fixed-scope build, ask 1–3 clarifying questions, and quote a price.' },
+  { name: '50% deposit',               body: 'Half upfront. The other half is due on handoff.' },
+  { name: 'Build, document, hand off', body: 'Typical builds run 1–3 weeks depending on package. You get the working automation plus run instructions.' },
+  { name: 'You validate',              body: 'You confirm outputs are correct before putting it into operational use. I support post-handoff fixes per package terms.' },
+]
+
+function HowItWorks() {
+  return (
+    <section className="mx-auto max-w-6xl px-6 py-20">
+      <SectionHead
+        id="how"
+        num="03"
+        kicker="process · how this works"
+        title="Five steps. No surprises."
+        sub="The whole engagement, start to finish. No retainers, no scope creep, no vague AI consulting."
+      />
+      <div className="panel divide-y divide-ink-800">
+        {HOW_STEPS.map((s, i) => (
+          <div key={i} className="px-6 py-5 flex items-start gap-5">
+            <div className="font-mono text-2xl text-signal shrink-0 w-10">
+              {String(i+1).padStart(2,'0')}
+            </div>
+            <div className="min-w-0">
+              <div className="font-mono text-[15px] text-ink-100 mb-1">{s.name}</div>
+              <p className="text-[15px] text-ink-300 leading-relaxed">{s.body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+/* ===========================================================
    WHAT I AUTOMATE
    =========================================================== */
 
@@ -733,7 +820,7 @@ function WhatIAutomate() {
     <section className="mx-auto max-w-6xl px-6 py-20">
       <SectionHead
         id="what"
-        num="02"
+        num="04"
         kicker="scope · what i automate"
         title="The work has a shape. I work in that shape."
         sub="If your workflow looks like one of these, it's almost certainly a fixed-scope build."
@@ -790,10 +877,10 @@ function Proof() {
     <section className="mx-auto max-w-6xl px-6 py-20">
       <SectionHead
         id="proof"
-        num="03"
-        kicker="proof · receipts"
+        num="05"
+        kicker="proof · build history"
         title="I have actually shipped this kind of thing."
-        sub="Anonymized — no employer or client names, no PHI, no regulated data."
+        sub="No fake testimonials. This is an early-stage offer, and the proof below is anonymized — much of my best automation work involved internal tools, support workflows, and client systems under agreement. References available after paid scope where applicable."
       />
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {PROOF_ITEMS.map((p, i) => (
@@ -856,7 +943,7 @@ function Packages({ onSelectPackage }) {
     <section className="mx-auto max-w-6xl px-6 py-20">
       <SectionHead
         id="packages"
-        num="04"
+        num="06"
         kicker="pricing · fixed scope"
         title="Three packages. Pick one."
         sub="No retainers. No hourly. No vague AI consulting. Pick the shape, and we scope it."
@@ -914,7 +1001,7 @@ function Boundaries() {
     <section className="mx-auto max-w-6xl px-6 py-20">
       <SectionHead
         id="boundaries"
-        num="05"
+        num="07"
         kicker="boundaries · how i work"
         title="The constraints that keep this fast and clean."
         sub="These aren't negotiable. They're what makes a fixed-scope sprint actually work."
@@ -989,7 +1076,7 @@ Reply to: josephwquinn90@outlook.com`
     <section className="mx-auto max-w-6xl px-6 py-20">
       <SectionHead
         id="contact"
-        num="06"
+        num="08"
         kicker="intake · send me a workflow"
         title="Want me to look at one workflow?"
         sub="Copy the intake summary and send it to me. I'll tell you within 24 hours whether it is a fit and what price range it falls into."
@@ -1038,10 +1125,22 @@ Reply to: josephwquinn90@outlook.com`
           <div className="mt-3 panel p-4">
             <div className="label mb-2">send to</div>
             <div className="font-mono text-[13px] text-ink-100 leading-relaxed">
-              Email: <span className="text-signal">josephwquinn90@outlook.com</span>
+              Email:{' '}
+              <a
+                href="mailto:josephwquinn90@outlook.com"
+                className="text-signal hover:text-signal-glow underline-offset-2 hover:underline">
+                josephwquinn90@outlook.com
+              </a>
             </div>
             <div className="font-mono text-[13px] text-ink-100 leading-relaxed mt-1">
-              or DM on LinkedIn: <span className="text-signal">linkedin.com/in/joseph-quinn-730622218</span>
+              or DM on LinkedIn:{' '}
+              <a
+                href="https://www.linkedin.com/in/joseph-quinn-730622218"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-signal hover:text-signal-glow underline-offset-2 hover:underline">
+                linkedin.com/in/joseph-quinn-730622218
+              </a>
             </div>
           </div>
 
